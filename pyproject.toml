@@ -1,6 +1,8 @@
 [tool.poetry]
 name = "zombie"
 version = "0.1.0"
+description = ""
+authors = ["Tan Le"]
 
 [tool.poetry.dependencies]
 python = "^3.10"
@@ -23,7 +25,7 @@ target-version = ['py38']
 [tool.pylint."messages control"]
 ignore = ["setup.py", "__init__.py", "tests"]
 disable = "all"
-enable = ["missing-class-docstring", "missing-function-docstring"]
+enable = []
 
 [tool.isort]
 profile = "black"
@@ -32,3 +34,6 @@ known_first_party = ["mycorp"]
 [tool.pyright]
 reportMissingTypeArgument = true # Report generic classes used without type arguments
 strictListInference = true       # Use union types when inferring types of lists elements, instead of Any
+
+[tool.flake8]
+max-line-length = 88
