@@ -2,3 +2,5 @@
 **/build
 
 pygbag
+
+**/__pycache__
