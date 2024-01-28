@@ -1,3 +1,5 @@
 {
-  "flake8.args": ["--config-toml=../pyproject.toml"]
+  "flake8.args": ["--config-toml=../pyproject.toml"],
+  "python.analysis.typeCheckingMode": "basic",
+  "cSpell.words": ["blit"]
 }
