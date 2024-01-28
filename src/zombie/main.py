@@ -1,4 +1,3 @@
-# Example file showing a circle moving on screen
 import asyncio
 
 import pygame
@@ -6,16 +5,15 @@ from pygame.sprite import Group
 
 from zombie import Zombie
 
-# pygame setup
-
-
 pygame.init()
 screen = pygame.display.set_mode((850, 478))
 pygame.display.set_caption("Zombie")
 clock = pygame.time.Clock()
 
 zombies = Group()
-zombies.add(Zombie(pos=(100, 200)))
+zombies_positions = [(440, 350), (280, 360), (580, 380), (430, 450), (140, 460), (650, 460)]
+for zp in zombies_positions:
+    zombies.add(Zombie(midbottom=zp))
 
 
 async def main():
