@@ -2,6 +2,9 @@
 import asyncio
 
 import pygame
+from pygame.sprite import Group
+
+from zombie import Zombie
 
 # pygame setup
 
@@ -11,12 +14,15 @@ screen = pygame.display.set_mode((850, 478))
 pygame.display.set_caption("Zombie")
 clock = pygame.time.Clock()
 
+zombies = Group()
+zombies.add(Zombie(pos=(100, 200)))
+
 
 async def main():
     running = True
     dt = 0
 
-    bg = pygame.image.load("assets/images/horror-background.jpg")
+    bg = pygame.image.load("assets/images/horror-background.jpg").convert()
 
     player_pos = pygame.Vector2(screen.get_width() / 2, screen.get_height() / 2)
 
@@ -31,8 +37,10 @@ async def main():
 
         # fill the screen with a color to wipe away anything from last frame
         screen.blit(bg, [0, 0])
+        # screen.blit(zombie, player_pos)
+        zombies.draw(screen)
 
-        pygame.draw.circle(screen, "red", player_pos, 40)
+        # pygame.draw.circle(screen, "red", player_pos, 40)
 
         keys = pygame.key.get_pressed()
         if keys[pygame.K_w]:
@@ -46,6 +54,7 @@ async def main():
 
         # flip() the display to put your work on screen
         pygame.display.flip()
+        zombies.update()
 
         # limits FPS to 60
         # dt is delta time in seconds since last frame, used for framerate-
