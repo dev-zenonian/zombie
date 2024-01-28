@@ -6,12 +6,17 @@ import pygame
 # pygame setup
 
 
+pygame.init()
+screen = pygame.display.set_mode((850, 478))
+pygame.display.set_caption("Zombie")
+clock = pygame.time.Clock()
+
+
 async def main():
-    pygame.init()
-    screen = pygame.display.set_mode((1280, 720))
-    clock = pygame.time.Clock()
     running = True
     dt = 0
+
+    bg = pygame.image.load("assets/images/horror-background.jpg")
 
     player_pos = pygame.Vector2(screen.get_width() / 2, screen.get_height() / 2)
 
@@ -25,7 +30,7 @@ async def main():
                 running = False
 
         # fill the screen with a color to wipe away anything from last frame
-        screen.fill("purple")
+        screen.blit(bg, [0, 0])
 
         pygame.draw.circle(screen, "red", player_pos, 40)
 
