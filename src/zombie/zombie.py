@@ -23,6 +23,7 @@ class Zombie(Sprite):
             remain = self.origin_height - pad
             change = 6 if remain > 6 else remain
             self.rect.y -= change
+            self.rect.height += change  # actual height for the surface
             self.dynamic_rect.height += change
             self.image = self.origin_image.subsurface(
                 self.dynamic_rect

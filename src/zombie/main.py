@@ -2,7 +2,7 @@ import asyncio
 
 import pygame
 from hammer import Hammer
-from pygame.sprite import Group, GroupSingle
+from pygame.sprite import Group, GroupSingle, spritecollide
 
 from zombie import Zombie
 
@@ -19,15 +19,6 @@ for zp in zombies_positions:
 
 player = GroupSingle()
 player.add(Hammer())
-
-
-def collision_sprite():
-    print(player.sprite, zombies)
-    zs = pygame.sprite.spritecollide(player.sprite, zombies, True)
-    if zs:
-        return True
-    else:
-        return False
 
 
 async def main():
@@ -52,7 +43,9 @@ async def main():
         player.draw(screen)
         player.update(pygame.mouse.get_pos())
 
-        collision_sprite()
+        collied_zombies = spritecollide(player.sprite, zombies, False)
+        if collied_zombies and pygame.mouse.get_pressed()[0]:
+            collied_zombies[0].kill()
 
         # pygame.display.flip()
         pygame.display.update()
