@@ -21,46 +21,41 @@ player = GroupSingle()
 player.add(Hammer())
 
 
+def collision_sprite():
+    print(player.sprite, zombies)
+    zs = pygame.sprite.spritecollide(player.sprite, zombies, True)
+    if zs:
+        return True
+    else:
+        return False
+
+
 async def main():
     running = True
     dt = 0
 
     bg = pygame.image.load("assets/images/horror-background.jpg").convert()
 
-    player_pos = pygame.Vector2(screen.get_width() / 2, screen.get_height() / 2)
-
     count = 0
     while running:
         count += 1
-        # poll for events
-        # pygame.QUIT event means the user clicked X to close your window
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
 
-        # fill the screen with a color to wipe away anything from last frame
         screen.blit(bg, [0, 0])
-        # screen.blit(zombie, player_pos)
+
         zombies.draw(screen)
-        player.draw(screen)
-
-        # pygame.draw.circle(screen, "red", player_pos, 40)
-
-        keys = pygame.key.get_pressed()
-        if keys[pygame.K_w]:
-            player_pos.y -= 300 * dt
-        if keys[pygame.K_s]:
-            player_pos.y += 300 * dt
-        if keys[pygame.K_a]:
-            player_pos.x -= 300 * dt
-        if keys[pygame.K_d]:
-            player_pos.x += 300 * dt
-
-        # flip() the display to put your work on screen
-        pygame.display.flip()
         zombies.update()
-        cursor_pos = pygame.mouse.get_pos()
-        player.update(cursor_pos)
+
+        player.draw(screen)
+        player.update(pygame.mouse.get_pos())
+
+        collision_sprite()
+
+        # pygame.display.flip()
+        pygame.display.update()
 
         # limits FPS to 60
         # dt is delta time in seconds since last frame, used for framerate-
