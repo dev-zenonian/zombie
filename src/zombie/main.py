@@ -3,8 +3,9 @@ from random import randint
 
 import pygame
 from custom_sprite import CustomSprite
-from hammer import Hammer
+from hammer import Hammer, HammerState
 from pygame.sprite import Group, GroupSingle, spritecollide
+from score import CollisionState, ScoreBoard
 
 from zombie import Zombie
 
@@ -20,21 +21,34 @@ zombies_positions = [(440, 350), (280, 360), (580, 380), (430, 450), (140, 460),
 #     zombies.add(Zombie(midbottom=zp))
 
 player = GroupSingle()
-player.add(Hammer())
+hammer = Hammer()
+player.add(hammer)
+
+score = GroupSingle()
+score.add(ScoreBoard())
 
 # Timer
 zombies_timer = pygame.USEREVENT + 1
 pygame.time.set_timer(zombies_timer, 800)
 
 
-def handle_collisions():
-    head_hammer_rect = player.sprite.rect.copy()
-    head_hammer_rect.width = head_hammer_rect.width / 2
+def handle_collisions() -> CollisionState:
+    if hammer.get_state() == HammerState.Hitting:
+        return CollisionState.NONE
 
-    head_hammer_sprite = CustomSprite(head_hammer_rect)
-    collied_zombies = spritecollide(head_hammer_sprite, zombies, False)
-    if collied_zombies and pygame.mouse.get_pressed()[0]:
-        collied_zombies[0].kill()
+    if pygame.mouse.get_pressed()[0]:
+        head_hammer_rect = player.sprite.rect.copy()
+        head_hammer_rect.width = head_hammer_rect.width / 2
+        head_hammer_sprite = CustomSprite(head_hammer_rect)
+
+        collied_zombies = spritecollide(head_hammer_sprite, zombies, False)
+
+        if collied_zombies:
+            collied_zombies[0].kill()
+            return CollisionState.HIT
+        return CollisionState.MISS
+
+    return CollisionState.NONE
 
 
 async def main():
@@ -73,7 +87,9 @@ async def main():
         player.draw(screen)
         player.update(pygame.mouse.get_pos())
 
-        handle_collisions()
+        state = handle_collisions()
+        score.draw(screen)
+        score.update(state)
 
         # pygame.display.flip()
         pygame.display.update()

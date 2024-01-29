@@ -1,5 +1,13 @@
+from enum import Enum
+
 from pygame import image, mouse, transform
 from pygame.sprite import Sprite
+
+
+class HammerState(Enum):
+    Normal = 0
+    StartHit = 1
+    Hitting = 2
 
 
 class Hammer(Sprite):
@@ -10,6 +18,7 @@ class Hammer(Sprite):
         self.rect = self.image.get_rect()
 
         self.rotate_value = -30
+        self.state = HammerState.Normal
         self.is_pressed = False
 
     def hit(self):
@@ -27,6 +36,15 @@ class Hammer(Sprite):
             else:
                 self.rotate_value = -30
                 self.is_pressed = False
+
+            # update state
+            if self.rotate_value == 10:
+                self.state = HammerState.StartHit
+            elif self.rotate_value == -30:
+                self.state = HammerState.Normal
+            else:
+                self.state = HammerState.Hitting
+
             self.hit()
 
     def update_pos(self, pos: tuple[int, int]):
@@ -37,3 +55,6 @@ class Hammer(Sprite):
     def update(self, pos: tuple[int, int]):
         self.update_pos(pos)
         self.handle_press()
+
+    def get_state(self):
+        return self.state
