@@ -1,6 +1,6 @@
 from enum import Enum
 
-from pygame import image, mouse, transform
+from pygame import image, mixer, mouse, transform
 from pygame.sprite import Sprite
 
 
@@ -20,9 +20,17 @@ class Hammer(Sprite):
         self.rotate_value = -30
         self.state = HammerState.Normal
         self.is_pressed = False
+        self.miss_sound = mixer.Sound("assets/sounds/hit-metal.mp3")
+        self.hit_sound = mixer.Sound("assets/sounds/hammer-hitting.mp3")
 
     def hit(self):
         self.image = transform.rotozoom(self.origin_image, self.rotate_value, 0.22)
+
+    def play_miss_sound(self):
+        self.miss_sound.play()
+
+    def play_hit_sound(self):
+        self.hit_sound.play()
 
     def check_pressed(self):
         self.is_pressed = mouse.get_pressed()[0]

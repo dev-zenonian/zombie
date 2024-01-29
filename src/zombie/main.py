@@ -31,6 +31,9 @@ score.add(ScoreBoard())
 zombies_timer = pygame.USEREVENT + 1
 pygame.time.set_timer(zombies_timer, 800)
 
+bg_music = pygame.mixer.Sound("assets/sounds/horror-background-atmosphere.mp3")
+bg_music.play(loops=-1)
+
 
 def handle_collisions() -> CollisionState:
     if hammer.get_state() == HammerState.Hitting:
@@ -45,7 +48,10 @@ def handle_collisions() -> CollisionState:
 
         if collied_zombies:
             collied_zombies[0].kill()
+            hammer.play_hit_sound()
             return CollisionState.HIT
+
+        hammer.play_miss_sound()
         return CollisionState.MISS
 
     return CollisionState.NONE
