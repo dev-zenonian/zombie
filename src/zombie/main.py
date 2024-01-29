@@ -69,9 +69,12 @@ async def main():
             elif event.type == zombies_timer:
                 if appear_count == 0:
                     amount = randint(2, len(zombies_positions))
+                    idxes = []
                     for _ in range(amount):
                         idx = randint(0, len(zombies_positions) - 1)
-                        zombies.add(Zombie(midbottom=zombies_positions[idx]))
+                        if idx not in idxes:
+                            idxes.append(idx)
+                            zombies.add(Zombie(midbottom=zombies_positions[idx]))
 
                 elif appear_count == 2:
                     appear_count = -1
