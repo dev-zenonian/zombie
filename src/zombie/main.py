@@ -7,7 +7,7 @@ from hammer import Hammer, HammerState
 from pygame.sprite import Group, GroupSingle, spritecollide
 from score import CollisionState, ScoreBoard
 
-from zombie import Zombie
+from zombie import Zombie, ZombieState
 
 pygame.init()
 screen = pygame.display.set_mode((850, 478))
@@ -47,7 +47,12 @@ def handle_collisions() -> CollisionState:
         collied_zombies = spritecollide(head_hammer_sprite, zombies, False)
 
         if collied_zombies:
-            collied_zombies[0].kill()
+            if collied_zombies[0].state == ZombieState.DIE:
+                # collied_zombies[0].hit()
+                hammer.play_miss_sound()
+                return CollisionState.MISS
+
+            collied_zombies[0].hit()
             hammer.play_hit_sound()
             return CollisionState.HIT
 
