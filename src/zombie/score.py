@@ -51,7 +51,7 @@ class ScoreBoard(Sprite):
 
         game_title = self.h1.render("Hello Zombie", False, (111, 196, 169))
         score_title = self.p.render(
-            f"Score - hit: {self.hit}, miss: {self.miss} ", False, (111, 196, 169)
+            f"Score: {self.score} -- hit: {self.hit}, miss: {self.miss} ", False, (111, 196, 169)
         )
         self.image = Surface(
             (score_title.get_width(), game_title.get_height() + 10 + score_title.get_height()),

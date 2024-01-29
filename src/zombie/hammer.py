@@ -46,7 +46,7 @@ class Hammer(Sprite):
                 self.is_pressed = False
 
             # update state
-            if self.rotate_value == 10:
+            if self.rotate_value == -20:
                 self.state = HammerState.StartHit
             elif self.rotate_value == -30:
                 self.state = HammerState.Normal
