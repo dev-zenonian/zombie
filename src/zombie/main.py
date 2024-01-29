@@ -1,19 +1,24 @@
 import asyncio
 
 import pygame
-from pygame.sprite import Group
+from hammer import Hammer
+from pygame.sprite import Group, GroupSingle
 
 from zombie import Zombie
 
 pygame.init()
 screen = pygame.display.set_mode((850, 478))
 pygame.display.set_caption("Zombie")
+pygame.mouse.set_visible(False)
 clock = pygame.time.Clock()
 
 zombies = Group()
 zombies_positions = [(440, 350), (280, 360), (580, 380), (430, 450), (140, 460), (650, 460)]
 for zp in zombies_positions:
     zombies.add(Zombie(midbottom=zp))
+
+player = GroupSingle()
+player.add(Hammer())
 
 
 async def main():
@@ -37,6 +42,7 @@ async def main():
         screen.blit(bg, [0, 0])
         # screen.blit(zombie, player_pos)
         zombies.draw(screen)
+        player.draw(screen)
 
         # pygame.draw.circle(screen, "red", player_pos, 40)
 
@@ -53,6 +59,8 @@ async def main():
         # flip() the display to put your work on screen
         pygame.display.flip()
         zombies.update()
+        cursor_pos = pygame.mouse.get_pos()
+        player.update(cursor_pos)
 
         # limits FPS to 60
         # dt is delta time in seconds since last frame, used for framerate-
