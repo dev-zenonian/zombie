@@ -1,4 +1,5 @@
 import asyncio
+from random import randint
 
 import pygame
 from custom_sprite import CustomSprite
@@ -15,11 +16,15 @@ clock = pygame.time.Clock()
 
 zombies = Group()
 zombies_positions = [(440, 350), (280, 360), (580, 380), (430, 450), (140, 460), (650, 460)]
-for zp in zombies_positions:
-    zombies.add(Zombie(midbottom=zp))
+# for zp in zombies_positions:
+#     zombies.add(Zombie(midbottom=zp))
 
 player = GroupSingle()
 player.add(Hammer())
+
+# Timer
+zombies_timer = pygame.USEREVENT + 1
+pygame.time.set_timer(zombies_timer, 800)
 
 
 def handle_collisions():
@@ -33,18 +38,32 @@ def handle_collisions():
 
 
 async def main():
+    bg = pygame.image.load("assets/images/horror-background.jpg").convert()
+
     running = True
     dt = 0
 
-    bg = pygame.image.load("assets/images/horror-background.jpg").convert()
-
+    appear_count = 0
     count = 0
+
     while running:
         count += 1
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
+            elif event.type == zombies_timer:
+                if appear_count == 0:
+                    amount = randint(2, len(zombies_positions))
+                    for _ in range(amount):
+                        idx = randint(0, len(zombies_positions) - 1)
+                        zombies.add(Zombie(midbottom=zombies_positions[idx]))
+
+                elif appear_count == 2:
+                    appear_count = -1
+                    zombies.empty()
+
+                appear_count += 1
 
         screen.blit(bg, [0, 0])
 
